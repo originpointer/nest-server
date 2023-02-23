@@ -7,8 +7,11 @@ export class CatsService {
   private readonly cats: Cat[] = [];
 
   create(cat: CreateCatDto): Cat {
-    this.cats.push(cat);
-    return cat;
+    const newCat = {
+      ...cat,
+    }
+    this.cats.push(newCat);
+    return newCat;
   }
 
   findOne(id: number): Cat {
