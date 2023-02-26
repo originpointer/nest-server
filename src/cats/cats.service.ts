@@ -9,7 +9,7 @@ export class CatsService {
   create(cat: CreateCatDto): Cat {
     const newCat = {
       ...cat,
-    }
+    };
     this.cats.push(newCat);
     return newCat;
   }

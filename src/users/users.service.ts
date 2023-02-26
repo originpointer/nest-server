@@ -22,6 +22,10 @@ export class UsersService {
     return this.userModel.findOne({ _id: id });
   }
 
+  async findByOpenId(openid: string) {
+    return this.userModel.findOne({ openid });
+  }
+
   async update(id: string, updateUserDto: UpdateUserDto) {
     return await this.userModel.updateOne({ _id: id }, updateUserDto);
   }

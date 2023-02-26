@@ -7,4 +7,7 @@ export class CreateUserDto {
 
   @IsString()
   password?: string;
+
+  @IsString()
+  openid?: string;
 }
