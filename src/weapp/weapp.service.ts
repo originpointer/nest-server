@@ -9,7 +9,6 @@ import { WeappLoginDto } from './dto/weapp-login.dto';
 export class WeappService {
   appSecret = '';
   constructor(private readonly httpService: HttpService) {
-    this.updateAppSecret();
   }
 
   updateAppSecret() {

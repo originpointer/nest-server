@@ -18,8 +18,8 @@ export class UsersService {
     return this.userModel.find();
   }
 
-  async findOne(id: string) {
-    return this.userModel.findOne({ _id: id });
+  async findOne(username: string) {
+    return this.userModel.findOne({ username });
   }
 
   async findByOpenId(openid: string) {
