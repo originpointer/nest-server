@@ -6,11 +6,11 @@ import {
   Patch,
   Param,
   Delete,
+  Request,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Public } from '../auth/decorators/public.decorator';
 
 @Controller('users')
 export class UsersController {
@@ -22,8 +22,8 @@ export class UsersController {
   }
 
   @Get('/all')
-  @Public()
-  findAll() {
+  findAll(@Request() req) {
+    console.log('req.user', req.user);
     return this.usersService.findAll();
   }
 

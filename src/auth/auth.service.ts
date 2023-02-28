@@ -10,7 +10,7 @@ export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly weappService: WeappService,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
   ) {}
 
   /**
@@ -31,6 +31,15 @@ export class AuthService {
     }
 
     console.log('dbUser', dbUser);
+    const { username, _id } = dbUser;
+
+    console.log('_id', _id.toString());
+    return {
+      access_token: this.jwtService.sign({
+        username,
+        userId: _id.toString(),
+      }),
+    };
   }
   async validateUser(username: string, pass: string): Promise<any> {
     const user = await this.usersService.findOne(username);
