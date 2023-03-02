@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Request } from '@nestjs/common';
+import { Controller, Post, Body, Request, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { WeappLoginDto } from '../weapp/dto/weapp-login.dto';
 import { Public } from './decorators/public.decorator';
@@ -17,5 +17,9 @@ export class AuthController {
   @Post('/login')
   async login(@Request() req) {
     return await this.authService.login(req.user);
+  }
+  @Get('/info')
+  async getCurrentUserInfo(@Request() req) {
+    return req.user;
   }
 }
