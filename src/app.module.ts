@@ -9,6 +9,7 @@ import { mongoDBConfig } from './config/db.config';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { TtsModule } from './tts/tts.module';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { TtsModule } from './tts/tts.module';
     UsersModule,
     AuthModule,
     TtsModule,
+    FileModule,
   ],
   controllers: [AppController],
   providers: [AppService],
