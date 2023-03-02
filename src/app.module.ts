@@ -8,6 +8,7 @@ import { CatsModule } from './cats/cats.module';
 import { mongoDBConfig } from './config/db.config';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { TtsModule } from './tts/tts.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { AuthModule } from './auth/auth.module';
     CatsModule,
     UsersModule,
     AuthModule,
+    TtsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

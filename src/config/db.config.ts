@@ -1,7 +1,9 @@
+import { MongooseModuleOptions } from '@nestjs/mongoose';
+
 const mongoDBConfig = {
-  useFactory: () => {
+  useFactory: (): MongooseModuleOptions => {
     return {
-      uri: `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOST}`,
+      uri: `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOST}/speaker?authSource=admin&directConnection=true`,
     };
   },
 };
