@@ -7,7 +7,6 @@ import { FileService } from './file.service';
 export class FileController {
   constructor(private readonly fileService: FileService) {}
 
-  @Public()
   @Get('stream')
   stream(@Res() response: Response) {
     const file = this.fileService.fileStream();

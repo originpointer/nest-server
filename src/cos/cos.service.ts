@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import * as STS from 'qcloud-cos-sts';
 import * as COS from 'cos-nodejs-sdk-v5';
+import * as fs from 'fs';
 import { cosConfig } from 'src/config/cos.config';
 import { TempSecretDto } from './dto/tmp-secret.dto';
+import { resolve } from 'path';
+import { reject } from 'lodash';
 
 @Injectable()
 export class CosService {
@@ -74,6 +77,69 @@ export class CosService {
             });
           } catch (error) {
             reject('cos临时密钥获取失败');
+          }
+        },
+      );
+    });
+  }
+
+  async putObject(filePath: string, key: string) {
+    const cos = new COS({
+      getAuthorization: (options, callback) => {
+        this.getAuthorization().then((tempSecretDto: TempSecretDto) => {
+          callback(tempSecretDto);
+        });
+      },
+    });
+    const config = cosConfig.useFactory();
+
+    return new Promise((resolve, reject) => {
+      cos.putObject(
+        {
+          Bucket: config.bucket,
+          Region: config.region,
+          Key: key,
+          StorageClass: 'STANDARD',
+          Body: fs.createReadStream(filePath),
+          ContentLength: fs.statSync(filePath).size,
+          onProgress: (progressData) => {
+            console.log(JSON.stringify(progressData));
+          },
+        },
+        (err, data) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(data);
+          }
+        },
+      );
+    });
+  }
+
+  async getObjectUrl(key: string) {
+    const cos = new COS({
+      getAuthorization: (options, callback) => {
+        this.getAuthorization().then((tempSecretDto: TempSecretDto) => {
+          callback(tempSecretDto);
+        });
+      },
+    });
+    const config = cosConfig.useFactory();
+
+    return new Promise((resolve, reject) => {
+      cos.getObjectUrl(
+        {
+          Bucket: config.bucket,
+          Region: config.region,
+          Key: key,
+          Sign: true,
+        },
+        (err, data) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(data);
           }
         },
       );

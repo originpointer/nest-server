@@ -16,7 +16,6 @@ export class TtsController {
 
   @Post('/transform-text')
   transformText(@Request() req, @Body() transformTextDto: TransformTextDto) {
-    // console.log(req.user)
-    return this.ttsService.transformText(transformTextDto, req.userId);
+    return this.ttsService.transformText(transformTextDto, req.user.userId);
   }
 }
