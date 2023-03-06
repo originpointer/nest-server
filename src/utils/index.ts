@@ -1,5 +1,6 @@
-import generateUsername from './namecreate';
+import { generateUsername, generateRandomFilename } from './namecreate';
 
 export {
-  generateUsername
+  generateUsername,
+  generateRandomFilename
 }

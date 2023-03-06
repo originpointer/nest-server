@@ -1,17 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import * as sdk from 'microsoft-cognitiveservices-speech-sdk';
+import {generateRandomFilename, generateUsername} from "../utils";
+import * as path from "path";
+import * as nodeProcess from "process";
+import * as fs from "fs";
+import process from "process";
 
 @Injectable()
 export class SpeechService {
   constructor() {}
 
   async speakTextAsync(text: string, voiceName = 'zh-cn-XiaochenNeural') {
+    const randomName = generateRandomFilename();
+    console.log('randomName', randomName);
+    const tmpFolderPath = path.join(nodeProcess.cwd(), 'tmp');
+    if (!fs.existsSync(tmpFolderPath)) {
+      fs.mkdirSync(tmpFolderPath)
+    }
+    const audioFile = path.join(nodeProcess.cwd(), `tmp/${randomName}.wav`);
+    
     const speechConfig = sdk.SpeechConfig.fromSubscription(
-      process.env.SPEECH_KEY,
-      process.env.SPEECH_REGION,
+      nodeProcess.env.SPEECH_KEY,
+      nodeProcess.env.SPEECH_REGION,
     );
 
-    const audioFile = 'YourAudioFile.wav';
     const audioConfig = sdk.AudioConfig.fromAudioFileOutput(audioFile);
     speechConfig.speechSynthesisVoiceName = voiceName;
     const synthesizer = new sdk.SpeechSynthesizer(speechConfig, audioConfig);
@@ -20,11 +32,12 @@ export class SpeechService {
       synthesizer.speakTextAsync(text, (result) => {
         synthesizer.close();
         if (result.reason === sdk.ResultReason.SynthesizingAudioCompleted) {
-          console.log('synthesis finished');
-          resolve('succcess');
+          return resolve({
+            name: randomName,
+            ext: 'wav'
+          });
         } else {
-          console.log('synthesis error');
-          reject('synthesis error');
+          return reject('synthesis error');
         }
       });
     });
